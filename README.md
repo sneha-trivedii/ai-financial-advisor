@@ -39,7 +39,7 @@ This project leverages **Murf.ai's text-to-speech API** to transform written fin
 - Local investment products
 
 ### 🎬 Video Demo
-![Workflow Demo](workflow-demo-video.mp4)
+![Workflow Demo](workflow-demo-video (1).mp4)
 
 ### 🎵 Sample Audio Output
 [🎵 Listen to Sample Financial Advice](sample-financial-advice.wav)
