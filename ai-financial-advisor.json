@@ -1,0 +1,319 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "User Details",
+        "formDescription": "Please enter your details.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Enter your name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Age",
+              "fieldType": "number",
+              "placeholder": "Enter your age",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Monthly Income",
+              "fieldType": "number",
+              "placeholder": "Enter your monthly income in rupees",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Current Savings",
+              "fieldType": "number",
+              "placeholder": "Total money in bank accounts (in Rupees)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Existing Investments",
+              "fieldType": "number",
+              "placeholder": "Current investments if any (in Rupees)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Outstanding Debts",
+              "fieldType": "number",
+              "placeholder": "Credit cards, loans, etc. (in Rupees)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Primary Financial Goal",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Emergency Fund"
+                  },
+                  {
+                    "option": "Buy a House"
+                  },
+                  {
+                    "option": "Retirement Planning"
+                  },
+                  {
+                    "option": "Child's Education"
+                  },
+                  {
+                    "option": "Wealth Building"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Investment Timeline",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "1-2 years"
+                  },
+                  {
+                    "option": "3-5 years"
+                  },
+                  {
+                    "option": "5-10 years"
+                  },
+                  {
+                    "option": "10+ years"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Risk Tolerance",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Conservative (safety first, low returns okay)"
+                  },
+                  {
+                    "option": "Moderate (balanced approach)"
+                  },
+                  {
+                    "option": "Aggressive (higher risk for higher returns)"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Life Insurance",
+              "fieldType": "number",
+              "placeholder": "Current coverage amount (in Rupees) or \"None\"",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Health Insurance",
+              "fieldType": "number",
+              "placeholder": "Current coverage amount (in Rupees) or \"None\"",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Which investment options interest you?",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Mutual Funds"
+                  },
+                  {
+                    "option": "Fixed Deposits"
+                  },
+                  {
+                    "option": "Stocks"
+                  },
+                  {
+                    "option": "PPF/ ELSS (Tax Saving)"
+                  },
+                  {
+                    "option": "Gold"
+                  },
+                  {
+                    "option": "Real Estate"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -576,
+        -160
+      ],
+      "id": "11e747c9-a32b-4fc9-979d-7598acd9d57b",
+      "name": "On form submission",
+      "webhookId": "f1473685-aded-41df-8ea9-05e41a10fa2b"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        64
+      ],
+      "id": "f3123cc5-d32f-4777-8a1f-83092cf5336a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YTETscXvh7aXveW8",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name: {{ $json.Name }}\nAge: {{ $json.Age }}\nMonthly Income: {{ $json['Monthly Income'] }}\nCurrent Savings: {{ $json['Current Savings'] }}\nExisting Investments: {{ $json['Existing Investments'] }}\nOutstanding Debts: {{ $json['Outstanding Debts'] }}\nPrimary Goal: {{ $json['Primary Financial Goal'] }}\nInvestment Timeline: {{ $json['Investment Timeline'] }}\nRisk Tolerance: {{ $json['Risk Tolerance'] }}\nCurrent Life Insurance: {{ $json['Life Insurance'] }}\nCurrent Health Insurance: {{ $json['Health Insurance'] }}\nInvestment Preferences: {{ $json['Which investment options interest you?'] }}",
+        "options": {
+          "systemMessage": "You are an expert financial advisor specializing in Indian markets and investment products. Analyze the following client profile and provide personalized financial advice in exactly 250 words or less.\n\n**Client Profile:**\n- Name: [NAME]\n- Age: [AGE]\n- Monthly Income: ₹[MONTHLY_INCOME]\n- Current Savings: ₹[CURRENT_SAVINGS]\n- Monthly Expenses: ₹[MONTHLY_EXPENSES]\n- Existing Investments: ₹[EXISTING_INVESTMENTS]\n- Outstanding Debts: ₹[OUTSTANDING_DEBTS]\n- Primary Goal: [PRIMARY_GOAL]\n- Investment Timeline: [INVESTMENT_TIMELINE]\n- Risk Tolerance: [RISK_TOLERANCE]\n- Current Life Insurance: ₹[LIFE_INSURANCE]\n- Current Health Insurance: ₹[HEALTH_INSURANCE]\n- Investment Preferences: [INVESTMENT_PREFERENCES]\n\n**Instructions:**\n1. Address the client by name and speak in a warm, conversational tone\n2. Focus on Indian investment products: Mutual Funds (SIP), ELSS, PPF, NSC, FDs, Indian stocks, Gold ETFs\n3. Consider Indian tax implications (80C, LTCG, STCG)\n4. Provide specific recommendations with approximate amounts in INR\n5. Include insurance gap analysis based on Indian standards\n6. Mention emergency fund target (6-12 months expenses)\n7. Give actionable next steps\n8. Keep language simple and avoid jargon\n9. Structure as: Greeting → Current Analysis → Recommendations → Action Items\n10. Ensure the response flows naturally when converted to speech\n\n**Critical Requirements:**\n- Maximum 250 words\n- India-specific advice only\n- Conversational tone for audio conversion\n- Include specific rupee amounts where possible\n- End with encouragement and next steps"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -160
+      ],
+      "id": "0dc2c46c-5b53-4e3f-bfcd-4bcfe74bcbe9",
+      "name": "Research Agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.murf.ai/v1/speech/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "ap2_0d83a60a-6a51-4860-887f-f3e7e2503835"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "voiceId",
+              "value": "bn-IN-arnab"
+            },
+            {
+              "name": "style",
+              "value": "Conversational"
+            },
+            {
+              "name": "multiNativeLocale",
+              "value": "en-IN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        32,
+        -160
+      ],
+      "id": "a15bb11b-c33b-44ef-b4ee-3ccc0486d53d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.audioFile }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        -160
+      ],
+      "id": "5cd2432f-0e98-4ee6-b2fa-f7c0da7c0933",
+      "name": "HTTP Request1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0e29b7c6-1ea5-4c61-99cc-81155c6684e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f37a10e6bdf48e826c8ebf5d93eaa75ae9608f3431dd4512eb869b425b2cf3fa"
+  },
+  "id": "DPEHBcL4h4Sbi10d",
+  "tags": []
+}
