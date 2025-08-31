@@ -38,11 +38,8 @@ This project leverages **Murf.ai's text-to-speech API** to transform written fin
 - INR-based calculations
 - Local investment products
 
-### 🎬 Video Demo
-![Workflow Demo](workflow-demo-video (1).mp4)
-
 ### 🎵 Sample Audio Output
-[🎵 Listen to Sample Financial Advice](sample-financial-advice.wav)
+[🎵 Listen to Sample Financial Advice](sample_financial_advice.wav)
 
 ## 🔧 Setup Instructions
 
